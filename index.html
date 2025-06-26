@@ -228,7 +228,7 @@
   <!-- Home View -->
   <section id="home" class="view active">
     <div class="content">
-      <h1 class="greeting">hello, aaron.</h1>
+      <h1 class="greeting">hello, karen.</h1>
     </div>
     <div class="footer">
       <a href="#page2" class="enter-link nav-link">Enter</a>
@@ -334,6 +334,7 @@ and keep us together as the lights go dark</p>
     // Music logic
     const musicBtn = document.getElementById('music-btn');
     const audio = document.getElementById('bg-music');
+    audio.volume = 0.6; // Sets volume to 80% (20% lower than full volume)
     let isPlaying = false;
 
     musicBtn.addEventListener('click', () => {
@@ -368,7 +369,7 @@ and keep us together as the lights go dark</p>
     // Convert to total minutes since midnight for easier comparison
     const totalMinutes = hour * 60 + minute;
 
-    let message = "hello, aaron.";
+    let message = "hello, karen.";
 
     if (totalMinutes >= 285 && totalMinutes <= 719) {
       message = "good morning, aaron"; // 4:45 AM – 11:59 AM
