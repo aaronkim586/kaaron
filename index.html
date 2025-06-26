@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>home</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="shortcut icon" href="assets/favicon.png" type="image/png">
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg,
+        rgba(74, 144, 226, 0.3) 0%,
+        rgba(143, 211, 244, 0.4) 25%,
+        rgba(162, 102, 246, 0.3) 50%,
+        rgba(248, 113, 113, 0.4) 75%,
+        rgba(251, 191, 36, 0.3) 100%);
+      background-size: 400% 400%;
+      animation: gradientFlow 8s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%,
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.1));
+      backdrop-filter: blur(20px);
+      animation: float 6s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .orb:nth-child(2) { width: 120px; height: 120px; top: 20%; left: 15%; animation-delay: 0s; }
+    .orb:nth-child(3) { width: 80px; height: 80px; top: 60%; right: 20%; animation-delay: -2s; }
+    .orb:nth-child(4) { width: 100px; height: 100px; bottom: 25%; left: 25%; animation-delay: -4s; }
+    .orb:nth-child(5) { width: 60px; height: 60px; top: 40%; right: 35%; animation-delay: -1s; }
+
+    /* View sections */
+    .view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .view.active {
+      display: block;
+      opacity: 1;
+      z-index: 10;
+    }
+
+    /* Home content */
+    .content {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .greeting {
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 300;
+      text-align: center;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, rgba(255,255,255,1), rgba(255,255,255,0.8));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: textGlow 3s ease-in-out infinite alternate;
+      margin-bottom: 2rem;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+    }
+
+    .enter-link, #music-btn {
+      color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 0.9rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      letter-spacing: 0.05em;
+      font-weight: 300;
+    }
+
+    .enter-link:hover, #music-btn:hover {
+      color: white;
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    /* Page 2 content */
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 4rem 2rem;
+    }
+
+    .text-content {
+  max-width: 800px;
+  height: 400px; /* ← fixed height for scrolling */
+  overflow-y: auto; /* ← enable scroll */
+  margin: 0 auto;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+
+    .text-content h2 {
+      color: #2d3748;
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .text-content p {
+      color: #4a5568;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      text-align: justify;
+      margin-bottom: 1.5rem;
+    }
+
+    .back-button {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .back-link {
+      font-size: 0.9rem;
+      color: rgba(45, 55, 72, 0.8);
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(45, 55, 72, 0.4);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: rgba(45, 55, 72, 1);
+      border-color: rgba(45, 55, 72, 0.7);
+      background: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    /* Animations */
+    @keyframes gradientFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+      50% { transform: translateY(-20px) scale(1.05); opacity: 0.9; }
+    }
+
+    @keyframes textGlow {
+      0% { text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); }
+      100% { text-shadow: 0 4px 30px rgba(255, 255, 255, 0.3); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background -->
+  <div class="background"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+
+  <!-- Music -->
+  <audio id="bg-music" src="chvrches.mp3" preload="auto"></audio>
+
+  <!-- Home View -->
+  <section id="home" class="view active">
+    <div class="content">
+      <h1 class="greeting">hello, aaron.</h1>
+    </div>
+    <div class="footer">
+      <a href="#page2" class="enter-link nav-link">Enter</a>
+      <button id="music-btn">Play</button>
+    </div>
+  </section>
+
+  <!-- Page 2 View -->
+  <section id="page2" class="view">
+    <div class="content-wrapper">
+      <div class="text-content">
+        <!-- <h2>Welcome to the Journey</h2> -->
+        <p>let's make a toast to the damned<br>
+waiting for tomorrow<br>
+when we're played out by the band<br>
+drowning out our sorrows<br>
+what will become of us now, at the end of time?<br>
+we'll be fine, you and i</p>
+
+<p>let's draw a line in the sand<br>
+keep it straight and narrow<br>
+we had it all in our hands<br>
+we begged and then we borrowed<br>
+what will become of us all at the end of love?<br>
+when we've stopped looking up?</p>
+
+<p>you can take my heart<br>
+and hold it together as we fall apart<br>
+maybe together we can make our mark in the stars we embark<br>
+and keep us together as the lights go dark</p>
+
+<p>let's tell the truth, just for once<br>
+asking for an answer<br>
+now that it's all said and done<br>
+nothing really matters<br>
+what will become of us all if we dare to dream?<br>
+at the end of the scene?</p>
+
+<p>you can take my heart<br>
+hold it together as we fall apart<br>
+maybe together we can make our mark in the stars we embark<br>
+and keep us together as the lights go dark</p>
+
+<p>let's open up to the sky<br>
+askin' it for closure<br>
+'least we can say that we tried<br>
+but it's never really over<br>
+what will become of us all, at the end of the line?<br>
+will we live?<br>
+will we die?</p>
+
+<p>you can take my heart<br>
+hold it together as we fall apart<br>
+maybe together we can make our mark in the stars we embark<br>
+and keep us together as the lights go dark</p>
+
+<p>you can take my heart<br>
+hold it together as we fall apart<br>
+maybe together we can make our mark in the stars we embark<br>
+and keep us together as the lights go dark</p>
+      </div>
+    </div>
+    <div class="back-button">
+      <a href="#home" class="back-link nav-link">Back</a>
+    </div>
+  </section>
+
+  <script>
+    // View switching
+    const views = document.querySelectorAll('.view');
+    const links = document.querySelectorAll('.nav-link');
+
+    function showView(id) {
+      const current = document.querySelector('.view.active');
+      const next = document.getElementById(id);
+      if (current && current !== next) {
+        current.style.opacity = 0;
+        setTimeout(() => {
+          current.classList.remove('active');
+          next.classList.add('active');
+          next.style.opacity = 1;
+        }, 300);
+      } else {
+        next.classList.add('active');
+        next.style.opacity = 1;
+      }
+    }
+
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.getAttribute('href').substring(1);
+        showView(target);
+      });
+    });
+
+    window.addEventListener('hashchange', () => {
+      const target = location.hash.substring(1) || 'home';
+      showView(target);
+    });
+    showView(location.hash.substring(1) || 'home');
+
+    // Music logic
+    const musicBtn = document.getElementById('music-btn');
+    const audio = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    musicBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        audio.play();
+        musicBtn.textContent = 'Pause';
+      } else {
+        audio.pause();
+        musicBtn.textContent = 'Play';
+      }
+      isPlaying = !isPlaying;
+    });
+
+    
+  /* function updateGreeting() {
+    const greeting = document.querySelector('.greeting');
+    
+    // Get current time in Pacific Time
+    const now = new Date();
+
+    // Convert to Pacific Time (accounts for Daylight Saving)
+    const pacificTime = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Los_Angeles',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(now);
+
+    const hour = parseInt(pacificTime.find(p => p.type === 'hour').value, 10);
+    const minute = parseInt(pacificTime.find(p => p.type === 'minute').value, 10);
+
+    // Convert to total minutes since midnight for easier comparison
+    const totalMinutes = hour * 60 + minute;
+
+    let message = "hello, aaron.";
+
+    if (totalMinutes >= 285 && totalMinutes <= 719) {
+      message = "good morning, aaron"; // 4:45 AM – 11:59 AM
+    } else if (totalMinutes >= 720 && totalMinutes <= 1019) {
+      message = "good afternoon, aaron"; // 12:00 PM – 4:59 PM
+    } else if (totalMinutes >= 1020 && totalMinutes <= 1139) {
+      message = "good evening, aaron"; // 5:00 PM – 6:59 PM
+    } else {
+      message = "good night, aaron"; // 7:00 PM – 4:44 AM
+    }
+
+    greeting.textContent = message;
+  }
+
+  // Run immediately on load
+  updateGreeting();
+*/
+
+
+  </script>
+</body>
+</html>
