@@ -557,6 +557,54 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Choice buttons styling */
+        .button-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .choice-button {
+            color: rgba(45, 55, 72, 0.8);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(45, 55, 72, 0.4);
+            border-radius: 25px;
+            padding: 0.8rem 2rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .choice-button:hover {
+            color: rgba(45, 55, 72, 1);
+            border-color: rgba(45, 55, 72, 0.7);
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .choice-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .yes-button:hover {
+            border-color: rgba(34, 197, 94, 0.7);
+            color: rgba(34, 197, 94, 0.9);
+        }
+
+        .no-button:hover {
+            border-color: rgba(239, 68, 68, 0.7);
+            color: rgba(239, 68, 68, 0.9);
+        }
+
+
   </style>
 </head>
   
@@ -661,6 +709,17 @@
       <p style="text-align: center;">palomar mtn.</p>
       <p style="text-align: center;">me, tuan, seifer, gill, khanon. you?</p>
       <p style="text-align: center;">let me know!</p>
+
+        <!-- Yes/No Buttons -->
+<div class="button-container" id="buttonContainer">
+    <button class="choice-button yes-button" onclick="handleChoice('Yes')">Yes</button>
+    <button class="choice-button no-button" onclick="handleChoice('No')">No</button>
+</div>
+
+<!-- Confirmation Message (hidden at first) -->
+<div id="confirmationMessage" style="display: none; text-align: center; margin-top: 1.5rem; font-weight: 500; color: #2d3748;">
+    ✅ Message received. Thank you!
+</div>
       </div> 
     </div>
     <div class="back-button">
@@ -932,6 +991,24 @@
       }
 
     }
+
+    function handleChoice(choice) {
+  emailjs.init("GtpraqYJDOANS2T-U"); // Replace with your actual public key
+
+  emailjs.send("service_it0yjen", "template_s6mcj5b", {
+    choice: choice,
+    to_name: "Aaron Kim",
+    from_name: "Your Website",
+  }).then(() => {
+        console.log("Email sent successfully.");
+    }).catch((error) => {
+        console.error("Email sending failed:", error);
+    });
+
+    // Hide buttons and show confirmation message
+    document.getElementById("buttonContainer").style.display = "none";
+    document.getElementById("confirmationMessage").style.display = "block";
+}
     
     // Initialize the music bubble player
     const musicPlayer = new MusicBubblePlayer();
