@@ -613,10 +613,11 @@
 
   <!-- Audio elements for playlist -->
   <audio id="track1" src="acall.mp3" preload="auto"></audio>
-  <audio id="track2" src="golden.mp3" preload="auto"></audio>
-  <audio id="track3" src="gold.mp3" preload="auto"></audio>
-  <audio id="track4" src="slide.mp3" preload="auto"></audio>
-  <audio id="track5" src="kissmemore.mp3" preload="auto"></audio>
+  <audio id="track2" src="eyes.m4a" preload="auto"></audio>
+  <audio id="track3" src="golden.mp3" preload="auto"></audio>
+  <audio id="track4" src="gold.mp3" preload="auto"></audio>
+  <audio id="track5" src="slide.mp3" preload="auto"></audio>
+  <audio id="track6" src="kissmemore.mp3" preload="auto"></audio>
   <audio id="track6" src="andjuly.mp3" preload="auto"></audio>
 
   <!-- Original Music (keeping for compatibility) -->
@@ -716,7 +717,8 @@
           { id: 'track3', name: 'Song 3', element: document.getElementById('track3') },
           { id: 'track4', name: 'Song 4', element: document.getElementById('track4') },
           { id: 'track4', name: 'Song 5', element: document.getElementById('track5') },
-          { id: 'track4', name: 'Song 6', element: document.getElementById('track6') }
+          { id: 'track4', name: 'Song 6', element: document.getElementById('track6') },
+          { id: 'track4', name: 'Song 7', element: document.getElementById('track7') }
         ];
         
         this.currentTrackIndex = 0;
@@ -869,8 +871,8 @@
       }
       
       updateWaveShield() {
-        // Show wave shield only when Song 2 (index 1) is playing
-        if (this.currentTrackIndex === 1 && this.isPlaying) {
+        // Show wave shield only when Song 3 (index 2) is playing
+        if (this.currentTrackIndex === 2 && this.isPlaying) {
           this.waveShield.classList.add('active');
         } else {
           this.waveShield.classList.remove('active');
